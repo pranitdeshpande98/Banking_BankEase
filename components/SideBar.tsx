@@ -46,6 +46,8 @@ const SideBar = ({user}: SiderbarProps) => {
           )
         })}
         </nav>
+
+        
         </section>
   )
 }
