@@ -52,19 +52,24 @@ const AuthForm = ({type} : {type:string}) => {
                 }
                 const newUser = await signUp(userData);
                 setUser(newUser);
+                setisLoading(false);
             }
 
             if (type === 'sign-in') {
                 const response = await signIn({
                     email: data.email, password: data.password,
                 })
-                if (response) router.push('/')
+                if (response) {
+                  router.push('/')
+                }
+                else{
+                  setErrorMessage("Invalid Credentials. Please check the email and password.")
+                  setisLoading(false);
+                } 
             }
         } catch (error) {
-          setErrorMessage('Invalid email or password. Please try again.');
-        } finally {
-            setisLoading(false);
-        }
+          console.log(error);
+        } 
     }
 
     return (
@@ -124,7 +129,11 @@ const AuthForm = ({type} : {type:string}) => {
                             <CustomInput control={form.control} name='email' label="Email" placeholder='Enter your email'/>
                             <CustomInput control={form.control} name='password' label="Password" placeholder='Enter your password'/>
       
-
+                            {errorMessage && (
+                                <FormMessage className="form-message mt-2">
+                                    {errorMessage}
+                                </FormMessage>
+                            )}
                             <div className="flex flex-col gap-4">
                            
                                 <Button type="submit" disabled={isLoading} className="form-btn">
